@@ -1,0 +1,70 @@
+id: HarborRegistry
+name: HarborRegistry
+description: VMware Harbor Registry on CentOS/RHEL7
+status: PUBLISHED
+components:
+  CentOS7:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 1
+        min: 1
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        default: 1
+        max: 1
+        min: 1
+      disks:
+      - capacity: 16
+        custom_properties: null
+        id: 1470088995505
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      guest_customization_specification: Linux
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 4048
+        max: 8000
+        min: 4048
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      security_groups: []
+      security_tags: []
+      source_machine:
+        fixed:
+          id: 1a50838c-0294-4634-a35a-c4aa74e42ac6
+          label: CentOS7
+      source_machine_external_snapshot:
+        fixed: 1
+      source_machine_name:
+        fixed: CentOS7
+      source_machine_vmsnapshot:
+        fixed:
+          id: '3'
+      storage:
+        default: 16
+        max: 16
+        min: 16
+  HarborRegistry:
+    type: Software.HarborRegistry
+    data:
+      Signon: admin
+      host:
+        fixed: ${_resource~CentOS7}
+      password: Harbor12345
+layout:
+  CentOS7: 0,0
+  HarborRegistry: 0,0

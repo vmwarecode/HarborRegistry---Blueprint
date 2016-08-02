@@ -1,0 +1,12 @@
+name: "auto-generated-pkg-c4f8cd68-9c38-42a4-9293-3a8325b39715"
+productVersion: "7.0.1-SNAPSHOT"
+data:
+- locator: "composite-blueprint/HarborRegistry.yaml"
+  name: "HarborRegistry"
+  description: "HarborRegistry"
+  dependencies:
+  - "software-component/Software.HarborRegistry.yaml"
+- locator: "software-component/Software.HarborRegistry.yaml"
+  name: "HarborRegistry"
+  description: "Harbor registry for Docker onRHEL/CENTOS7"
+exportTime: "2016-08-01T23:51:03.411Z"

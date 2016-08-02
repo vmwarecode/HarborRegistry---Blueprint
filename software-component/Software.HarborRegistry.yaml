@@ -1,0 +1,128 @@
+'@type': "SoftwareComponentType"
+createdDate: "2016-07-28T19:16:55.382Z"
+lastUpdated: "2016-08-01T22:00:49.430Z"
+id: "Software.HarborRegistry"
+name: "HarborRegistry"
+description: "Harbor registry for Docker onRHEL/CENTOS7"
+publishStatus: "PUBLISHED"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "HarborURL"
+    label: "HarborURL"
+    description: "URL to harbor instance"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "editable"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: false
+      - type: "derivedValue"
+        value:
+          type: "constant"
+    isMultiValued: false
+  - id: "password"
+    label: "password"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "Harbor12345"
+    isMultiValued: false
+  - id: "Signon"
+    label: "Signon"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "admin"
+    isMultiValued: false
+  - id: "host"
+    label: "Container"
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2016-07-28T19:29:56.726Z"
+  lastUpdated: "2016-08-01T22:29:36.748Z"
+  script:
+    scriptContent: "export PATH=$PATH:/usr/local/sbin;/usr/local/bin;/usr/sbin;/usr/bin;/sbin;/root/bin;usr/local/bin\n\
+      systemctl start docker\nsystemctl enable docker\ncd /tmp/harbor/Deploy\ndocker-compose\
+      \ up -d"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "START"
+    label: "Start"
+- createdDate: "2016-07-28T19:29:56.728Z"
+  lastUpdated: "2016-08-01T22:29:36.748Z"
+  script:
+    scriptContent: "export PATH=$PATH:/usr/local/sbin;/usr/local/bin;/usr/sbin;/usr/bin;/sbin;/root/bin\n\
+      yum -y install git docker\ncurl -L https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname\
+      \ -s`-`uname -m` > /usr/local/bin/docker-compose\nchmod +x /usr/local/bin/docker-compose\n\
+      cd /tmp\ngit clone https://github.com/vmware/harbor\n"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"
+- createdDate: "2016-07-28T19:29:56.727Z"
+  lastUpdated: "2016-08-01T22:29:36.748Z"
+  script:
+    scriptContent: "export PATH=$PATH:/usr/local/sbin;/usr/local/bin;/usr/sbin;/usr/bin;/sbin;/root/bin\n\
+      export my_ip=$(hostname  -I | cut -f1 -d' ')\nHarborURL=http://$my_ip\nsed -i\
+      \ '/hostname = reg.mydomain.com/c\\hostname = '$my_ip' ' /tmp/harbor/Deploy/harbor.cfg\n\
+      cd /tmp/harbor/Deploy\n./prepare"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "CONFIGURE"
+    label: "Configure"
